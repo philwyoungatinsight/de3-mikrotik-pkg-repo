@@ -1,0 +1,66 @@
+mikrotik-pkg:
+  _provides_capability:
+  - mikrotik-pkg: 1.0.0
+
+  waves:
+  - name: network.mikrotik
+    description: 'Configure a MikroTik CRS317 10GigE switch: VLAN-aware bridge,
+      port roles (uplink/cloud_public/storage), management IP on a VLAN interface.
+      Skipped on clean (switch config preserved across rebuilds). Uses RouterOS
+      API-SSL (apis://, port 8729) on RouterOS 7+.
+
+      '
+    _skip_on_wave_run: true
+    test_action: reapply
+    update_inventory: false
+
+  config_params:
+    # ---------------------------------------------------------------------------
+    # Example deployment — illustrates the required config structure.
+    # Copy to your deployment package (e.g. pwy-home-lab-pkg) and set real values.
+    # Real deployment: pwy-home-lab-pkg/_stack/routeros/pwy-homelab
+    # ---------------------------------------------------------------------------
+    mikrotik-pkg/_stack/routeros/example-lab:
+      _env: example
+      _provider: routeros
+      _skip_on_build: true
+      # BOOTSTRAP: use "apis://192.168.88.1:8729" while laptop is directly
+      # connected to switch RJ45. After first apply update to management IP.
+      _provider_routeros_endpoint: "apis://192.168.88.1:8729"
+      _provider_routeros_insecure: true
+      _region: example-lab
+
+    mikrotik-pkg/_stack/routeros/example-lab/switches/crs317-example-switch:
+      _unit_purpose: 'Example MikroTik CRS317-1G-16S+RM configuration. Shows a
+        VLAN-aware bridge with uplink, cloud_public, and storage port roles.
+        Copy to your deployment package and replace with real values.'
+      _wave: network.mikrotik
+      _browser_url: "http://10.0.11.5"
+      hostname: crs317-example-switch
+      management_vlan_id: 11
+      management_ip: "10.0.11.5"
+      management_prefix: 24
+      management_gateway: "10.0.11.1"
+      ports:
+        sfp-sfpplus16:
+          name: uplink-example
+          role: uplink
+          pvid: 10
+        sfp-sfpplus1:
+          name: host-1-cloud
+          role: cloud_public
+          pvid: 10
+        sfp-sfpplus2:
+          name: host-2-cloud
+          role: cloud_public
+          pvid: 10
+        # Storage ports: set role: storage and pvid: 14 when cables available
+      vlans:
+        cloud_public:
+          id: 10
+        management:
+          id: 11
+        provisioning:
+          id: 12
+        storage:
+          id: 14
