@@ -20,17 +20,19 @@ mikrotik-pkg:
     # Copy to your deployment package (e.g. pwy-home-lab-pkg) and set real values.
     # Real deployment: pwy-home-lab-pkg/_stack/routeros/pwy-homelab
     # ---------------------------------------------------------------------------
-    mikrotik-pkg/_stack/routeros/example-lab:
+    mikrotik-pkg/_stack/routeros/examples-archive:
       _env: example
       _provider: routeros
       _skip_on_build: true
+
+    mikrotik-pkg/_stack/routeros/examples-archive/example-lab:
       # BOOTSTRAP: use "apis://192.168.88.1:8729" while laptop is directly
       # connected to switch RJ45. After first apply update to management IP.
       _provider_routeros_endpoint: "apis://192.168.88.1:8729"
       _provider_routeros_insecure: true
       _region: example-lab
 
-    mikrotik-pkg/_stack/routeros/example-lab/switches/crs317-example-switch:
+    mikrotik-pkg/_stack/routeros/examples-archive/example-lab/switches/crs317-example-switch:
       _unit_purpose: 'Example MikroTik CRS317-1G-16S+RM configuration. Shows a
         VLAN-aware bridge with uplink, cloud_public, and storage port roles.
         Copy to your deployment package and replace with real values.'
