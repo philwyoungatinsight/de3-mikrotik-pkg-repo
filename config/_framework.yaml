@@ -1,2 +1,7 @@
 _framework:
   main_package: mikrotik-pkg
+  labels:
+    - name: _purpose
+      value: MikroTik switch provisioning and configuration via the RouterOS Terraform provider
+    - name: _docs
+      value: https://github.com/philwyoungatinsight/de3-mikrotik-pkg-repo
